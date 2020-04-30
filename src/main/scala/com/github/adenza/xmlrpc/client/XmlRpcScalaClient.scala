@@ -10,16 +10,16 @@ import scala.reflect.runtime.universe._
 
 /**
   * Scala XmlRpc client
-  * @param config XmlRpcClientConfigImpl
+  * @param xmlRpcConfig XmlRpcClientConfigImpl
   * @param xmlRpcClient XmlRpcClient
   * @param executionContext ExecutionContext
   */
 class XmlRpcScalaClient(
-  config: XmlRpcScalaConfig,
-  xmlRpcClient: XmlRpcClient = new XmlRpcClient
+    xmlRpcConfig: XmlRpcScalaConfig,
+    xmlRpcClient: XmlRpcClient = new XmlRpcClient
 )(implicit val executionContext: ExecutionContext) {
 
-  xmlRpcClient.setConfig(config)
+  xmlRpcClient.setConfig(xmlRpcConfig.config)
 
   /**
     * Make call to XMLRPC service
@@ -30,8 +30,8 @@ class XmlRpcScalaClient(
     * @return
     */
   def call[RESPONSE <: Product: TypeTag: ClassTag](
-    methodName: String,
-    params: Product
+      methodName: String,
+      params: Product
   ): concurrent.Future[RESPONSE] =
     Future {
       val javaParams = XmlRpcSerializer.toParams(params)

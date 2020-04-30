@@ -4,7 +4,7 @@ import java.net.URL
 
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 
-class XmlRpcScalaConfig extends XmlRpcClientConfigImpl
+case class XmlRpcScalaConfig(config: XmlRpcClientConfigImpl)
 
 object XmlRpcScalaConfig {
   def apply(serverUrl: URL,
@@ -18,6 +18,6 @@ object XmlRpcScalaConfig {
     config.setBasicPassword(basicPassword)
     config.setEnabledForExceptions(enabledForExceptions)
     config.setEnabledForExtensions(enabledForExtensions)
-    config.asInstanceOf[XmlRpcScalaConfig]
+    XmlRpcScalaConfig(config)
   }
 }

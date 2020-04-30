@@ -1,13 +1,14 @@
 package com.github.adenza.xmlrpc.client
 
 import java.io.ByteArrayInputStream
-import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
+import java.net.URL
+import java.time.{LocalDateTime, OffsetDateTime}
 import java.util.UUID
 
 import com.github.adenza.xmlrpc.client.models._
 import com.github.adenza.xmlrpc.client.transport.{MockXmlRpcTransport, MockXmlRpcTransportFactory}
 import com.github.adenza.xmlrpc.exceptions.XmlRpcScalaClientException
-import org.apache.xmlrpc.client.{XmlRpcClient, XmlRpcClientConfigImpl}
+import org.apache.xmlrpc.client.XmlRpcClient
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.funsuite.AsyncFunSuite
 import org.scalatest.matchers.should.Matchers
@@ -17,14 +18,11 @@ import org.scalatest.matchers.should.Matchers
   */
 class XmlRpcClientTest extends AsyncFunSuite with Matchers with MockitoSugar with ArgumentMatchersSugar {
 
-  val config = new XmlRpcClientConfigImpl()
+  val xmlRpcConfig: XmlRpcScalaConfig =
+    XmlRpcScalaConfig(new URL("http://localhost"), "user", "password", enabledForExtensions = true)
   val xmlRpcClient: XmlRpcClient = new XmlRpcClient
   val transport = new MockXmlRpcTransport(xmlRpcClient)
-  val xmlRpcScalaClient: XmlRpcScalaClient = {
-    config.setEnabledForExceptions(true)
-    config.setEnabledForExtensions(true)
-    new XmlRpcScalaClient(config, xmlRpcClient)
-  }
+  val xmlRpcScalaClient: XmlRpcScalaClient = new XmlRpcScalaClient(xmlRpcConfig, xmlRpcClient)
 
   test("CardDetailResponse mapped successfully from XML response") {
     val response: String =
@@ -126,7 +124,12 @@ class XmlRpcClientTest extends AsyncFunSuite with Matchers with MockitoSugar wit
 //          //exSerializableValue: Serializable
       assert(response.exBigDecimalValue === scala.math.BigDecimal("123456789012.12"))
       assert(response.exBigIntegerValue === scala.math.BigInt("1234567890123456"))
-      assert(response.exDateTimeValue === OffsetDateTime.parse("1991-01-01T00:02:03+07:00").toInstant.atOffset(OffsetDateTime.now().getOffset))
+      assert(
+        response.exDateTimeValue === OffsetDateTime
+          .parse("1991-01-01T00:02:03+07:00")
+          .toInstant
+          .atOffset(OffsetDateTime.now().getOffset)
+      )
       assert(response.uuidValue === UUID.fromString("a0931628-9b15-4f8b-9171-19168c1d9301"))
     }
   }
@@ -185,8 +188,9 @@ class XmlRpcClientTest extends AsyncFunSuite with Matchers with MockitoSugar wit
 
   test("Unexpected Exception") {
     val mockClient = mock[XmlRpcClient]
-    val config = new XmlRpcClientConfigImpl()
-    val mockRpcScalaClient = new XmlRpcScalaClient(config, mockClient)
+    val xmlRpcConfig: XmlRpcScalaConfig =
+      XmlRpcScalaConfig(new URL("http://localhost"), "user", "password", enabledForExceptions = false)
+    val mockRpcScalaClient = new XmlRpcScalaClient(xmlRpcConfig, mockClient)
 
     when(mockClient.execute(any, any[Array[Object]])).thenThrow(new Exception("Unexpected Exception"))
     recoverToExceptionIf[XmlRpcScalaClientException] {
