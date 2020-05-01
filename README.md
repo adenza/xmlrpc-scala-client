@@ -13,6 +13,11 @@ It allows to work with input and output object with familar case classes.
 ```sbt
 libraryDependencies += "com.github.adenza" %% "xmlrpc-scala-client" % "0.1.0"
 ```
+or 
+```sbt
+resovers += Resolver.sonatypeReso("snashots")
+libraryDependencies += "com.github.adenza" %% "xmlrpc-scala-client" % "0.1.0-SNAPSHOT"
+```
 
 ## Usage
 
