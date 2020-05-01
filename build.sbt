@@ -10,6 +10,12 @@ scmInfo := Some(
   )
 )
 
+publishTo := Some(if (version.value.endsWith("SNAPSHOT"))
+  "Sonatype Snapshots Nexus" at "https://oss.sonatype.org/content/repositories/snapshots"
+else
+  "Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
+credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
+
 scalaVersion := "2.12.11"
 
 crossScalaVersions := Seq(scalaVersion.value, "2.13.1")

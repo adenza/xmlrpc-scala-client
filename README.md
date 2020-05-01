@@ -2,10 +2,19 @@
 
 ![Scala CI](https://github.com/adenza/xmlrpc-scala-client/workflows/Scala%20CI/badge.svg)
 [![codecov](https://codecov.io/gh/adenza/xmlrpc-scala-client/branch/master/graph/badge.svg)](https://codecov.io/gh/adenza/xmlrpc-scala-client)
+[![mvn](https://img.shields.io/badge/maven-0.1.0-blue)](https://mvnrepository.com/artifact/com.github.adenza/xmlrpc-scala-client/0.1.0)
 
 Scala XML-RPC wrapper for apache java library https://ws.apache.org/xmlrpc/
 
 It allows to work with input and output object with familar case classes.
+
+## Installation
+
+```sbt
+libraryDependencies += "com.github.adenza" %% "xmlrpc-scala-client" % "0.1.0"
+```
+
+## Usage
 
 First define input parameters and expected result:
 
@@ -37,7 +46,7 @@ val result: Future[Result] = xmlRpcClient.call[Result]("AddValue", params)
 
 ```
 
-Error handling:
+## Error handling
 
 ```scala
 import com.github.adenza.xmlrpc.exceptions._
