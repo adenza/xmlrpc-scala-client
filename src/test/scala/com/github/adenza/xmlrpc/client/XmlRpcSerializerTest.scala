@@ -104,4 +104,13 @@ class XmlRpcSerializerTest extends AnyFunSuite {
     assert(thrown.getMessage == "Required parameter constructor SerializerModel.someDate is missing in the response")
   }
 
+  test("Casting Exception") {
+    val mainObj = new util.HashMap[String, Any]()
+    mainObj.put("currency", 123)
+
+    val thrown = intercept[XmlRpcDeserializationException] {
+      XmlRpcSerializer.fromResponse[SerializerModel](mainObj)
+    }
+    assert(thrown.getMessage == "Casting error [class SerializerModel.currency]: Cannot cast java.lang.Integer to java.lang.String")
+  }
 }

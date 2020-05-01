@@ -18,9 +18,6 @@ import scala.util.{Failure, Success}
   */
 object XmlRpcSerializer {
 
-  // XML-RPC date format
-  def dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:ss")
-
   def zoneId: ZoneId = ZoneId.systemDefault()
 
   /**
