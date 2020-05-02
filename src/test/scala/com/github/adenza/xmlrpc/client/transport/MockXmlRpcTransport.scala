@@ -12,7 +12,7 @@ import org.apache.xmlrpc.common.XmlRpcStreamRequestConfig
   */
 class MockXmlRpcTransport(pClient: XmlRpcClient) extends XmlRpcStreamTransport(pClient) {
 
-  override def close(): Unit = Unit
+  override def close(): Unit = ()
 
   override def isResponseGzipCompressed(pConfig: XmlRpcStreamRequestConfig): Boolean = false
 

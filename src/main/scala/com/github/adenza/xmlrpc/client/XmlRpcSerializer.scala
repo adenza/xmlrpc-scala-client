@@ -1,7 +1,6 @@
 package com.github.adenza.xmlrpc.client
 
 import java.time._
-import java.time.format.DateTimeFormatter
 import java.util.{Date, GregorianCalendar}
 
 import com.github.adenza.xmlrpc.exceptions.XmlRpcDeserializationException
@@ -27,7 +26,7 @@ object XmlRpcSerializer {
     * @return
     */
   def toParams(caseClass: Product): Array[AnyRef] =
-    caseClass.productIterator.to.map {
+    caseClass.productIterator.map {
       case localDate: LocalDate =>
         java.util.Date.from(localDate.atStartOfDay(zoneId).toInstant).asInstanceOf[AnyRef]
       case localDateTime: LocalDateTime =>
