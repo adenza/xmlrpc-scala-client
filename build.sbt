@@ -19,6 +19,7 @@ credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 scalaVersion := "2.12.11"
 
 crossScalaVersions := Seq(scalaVersion.value, "2.13.1")
+scalacOptions ++= Seq("-deprecation", "-feature")
 
 lazy val xmlRpcScalaClient = Project(id = "vcard-api", base = file("."))
 
